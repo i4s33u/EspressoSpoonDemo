@@ -21,13 +21,15 @@ package com.emmasuzuki.espressospoondemo;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
 /**
  * Demo Login activity class
  */
-public class LoginActivity extends Activity {
+public class LoginActivity
+    extends Activity {
 
     private static final String DEMO_EMAIL = "espresso@spoon.com";
     private static final String DEMO_PASSWORD = "lemoncake";
@@ -42,6 +44,7 @@ public class LoginActivity extends Activity {
 
         mEmail = (EditText) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
+        mError = findViewById(R.id.error);
 
         View submitButton = findViewById(R.id.submit);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -58,13 +61,13 @@ public class LoginActivity extends Activity {
     }
 
     private void validateFields() {
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(mEmail.getText().toString()).matches()) {
+        if (TextUtils.isEmpty(mEmail.getText())) {
             mEmail.setError(getString(R.string.msg_email_error));
         } else {
             mEmail.setError(null);
         }
 
-        if (mPassword.getText().toString().isEmpty()) {
+        if (TextUtils.isEmpty(mPassword.getText())) {
             mPassword.setError(getString(R.string.msg_password_error));
         } else {
             mPassword.setError(null);
@@ -72,13 +75,10 @@ public class LoginActivity extends Activity {
     }
 
     private void validateAccount() {
-        if (!mEmail.getText().toString().equals(DEMO_EMAIL) || !mPassword.getText().toString().equals(DEMO_PASSWORD)) {
-            if (mError == null) {
-                mError = findViewById(R.id.error);
-            }
-
-            // Purposefully commenting this line out to demonstrate test failure
-//            mError.setVisibility(View.VISIBLE);
+        if (!mEmail.getText().toString().equals(DEMO_EMAIL) || !mPassword.getText()
+            .toString()
+            .equals(DEMO_PASSWORD)) {
+            mError.setVisibility(View.VISIBLE);
         } else {
             mError.setVisibility(View.GONE);
         }
